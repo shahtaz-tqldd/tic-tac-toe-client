@@ -23,7 +23,8 @@ export const routes = createBrowserRouter([
         element: <Game />
     },
     {
-        path: '/game/board',
-        element: <GameBoard />
+        path: '/games/board/:id',
+        element: <GameBoard />,
+        loader: ({ params }) => fetch(`https://tic-toe-backend.vercel.app/games/board/${params.id}`)
     },
 ])

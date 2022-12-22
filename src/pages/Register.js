@@ -20,19 +20,34 @@ const Register = () => {
                     displayName: name,
                     username
                 }
-                updateProfile(userInfo)
+                const dbUserInfo = { ...userInfo, email }
+                updateProfile(userInfo, dbUserInfo)
             })
             .catch(err => console.error(err))
     }
 
-    const updateProfile = (userInfo) => {
+    const updateProfile = (userInfo, dbUserInfo) => {
         userUpdate(userInfo)
             .then(result => {
                 console.log(result)
                 toast.success("User created successfully!")
-                navigate('/login')
+                addToDB(dbUserInfo)
             })
             .catch(err => console.error(err))
+    }
+
+    const addToDB = (dbUserInfo) => {
+        fetch('https://tic-toe-backend.vercel.app/user', {
+            method: 'POST',
+            headers: {
+                'Content-type': 'application/json'
+            },
+            body: JSON.stringify(dbUserInfo)
+        })
+            .then(res => res.json())
+            .then(() => {
+                navigate('/login')
+            })
     }
 
     return (
